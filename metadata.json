@@ -1,0 +1,6 @@
+{
+  "name": "CareerAI – AI Resume Builder & Job Finder",
+  "description": "Production-ready full-stack AI Resume Builder, ATS analyzer, career recommender, job finder, and mock interview simulator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
