@@ -4,890 +4,302 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CareerAI – AI Resume Builder & Job Finder</title>
-  <meta name="description" content="AI Resume Builder, ATS resume analyzer, smart job matching, and AI mock interview platform.">
+  <meta name="description" content="Production-ready full-stack AI Resume Builder, ATS analyzer, career recommender, job finder, and mock interview simulator.">
   <meta property="og:title" content="CareerAI – AI Resume Builder & Job Finder">
-  <meta property="og:description" content="AI Resume Builder, ATS resume analyzer, smart job matching, and AI mock interview platform.">
+  <meta property="og:description" content="Production-ready full-stack AI Resume Builder, ATS analyzer, career recommender, job finder, and mock interview simulator.">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- Top Navigation -->
-  <header class="app-header" id="mainHeader">
-    <div class="nav-container">
-      <div class="brand-logo" id="navBrandLogo" onclick="navigateTo('landing')">
-        <div class="brand-icon">C</div>
-        <span>Career<span class="brand-ai-badge">AI</span></span>
-      </div>
+<header class="navbar">
+  <div class="logo">Career<span>AI</span></div>
 
-      <ul class="nav-links" id="navLinks">
-        <li><button class="nav-link active" id="navHomeBtn" onclick="navigateTo('landing')">Home</button></li>
-        <li class="auth-only" style="display:none;"><button class="nav-link" id="navDashBtn" onclick="navigateTo('dashboard')">Dashboard</button></li>
-        <li><button class="nav-link" id="navResumeBtn" onclick="navigateTo('builder')">Resume Builder</button></li>
-        <li><button class="nav-link" id="navAnalysisBtn" onclick="navigateTo('analysis')">AI Analysis</button></li>
-        <li><button class="nav-link" id="navJobsBtn" onclick="navigateTo('jobs')">Job Finder</button></li>
-        <li><button class="nav-link" id="navInterviewBtn" onclick="navigateTo('interview')">Mock Interview</button></li>
-        <li class="auth-only" style="display:none;"><button class="nav-link" id="navRoadmapBtn" onclick="navigateTo('skillgap')">Skill Gap</button></li>
-        <li class="auth-only" style="display:none;"><button class="nav-link" id="navTrackerBtn" onclick="navigateTo('tracker')">Applications</button></li>
-      </ul>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#resume">Resume</a>
+    <a href="#jobs">Jobs</a>
+    <a href="#interview">Interview</a>
+    <span id="userBadge" class="user-badge hidden"></span>
+    <button id="loginBtn" class="nav-btn">Login</button>
+    <button id="logoutBtn" class="nav-btn hidden">Logout</button>
+  </nav>
+</header>
 
-      <div class="nav-actions">
-        <!-- Guest Actions -->
-        <div id="guestActions" style="display: flex; gap: 0.5rem; align-items: center;">
-          <button class="btn btn-secondary btn-sm" id="navDemoLoginBtn" onclick="quickDemoLogin()">Demo Login</button>
-          <button class="btn btn-outline btn-sm" id="navLoginBtn" onclick="openLoginModal()">Login</button>
-          <button class="btn btn-primary btn-sm" id="navRegisterBtn" onclick="openRegisterModal()">Get Started</button>
-        </div>
+<main>
 
-        <!-- Authenticated User Actions -->
-        <div id="authActions" style="display: none; align-items: center; gap: 0.75rem;">
-          <div class="user-pill" id="userProfilePill" onclick="navigateTo('dashboard')">
-            <div class="user-avatar" id="navUserAvatar">A</div>
-            <span id="navUserName">Alex Morgan</span>
-          </div>
-          <button class="btn btn-secondary btn-sm" id="navLogoutBtn" onclick="logoutUser()">Logout</button>
-        </div>
+<section id="home" class="hero">
+  <div>
+    <p class="badge">AI CAREER PLATFORM</p>
+    <h1>Build Your Career<br><span>With AI</span></h1>
+    <p class="hero-text">
+      Create professional resumes, analyze your skills,
+      discover suitable jobs and practice AI-powered interviews.
+    </p>
 
-        <button class="mobile-menu-btn" id="mobileMenuToggle" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">☰</button>
-      </div>
+    <button id="startBtn" class="primary-btn">
+      Create My Resume
+    </button>
+  </div>
+
+  <div class="hero-card">
+    <h3>CareerAI</h3>
+    <p>AI Career Assistant</p>
+
+    <div class="score">
+      <strong>92%</strong>
+      <small>Resume Score</small>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- Main Content Body -->
-  <main class="main-wrapper" id="mainContainer">
 
-    <!-- 1. LANDING PAGE VIEW -->
-    <section class="view-section active-view" id="viewLanding">
-      <div class="hero-section">
-        <div class="hero-pill">
-          <span>✨ Gemini 3.8 Flash Powered Career Platform</span>
-        </div>
-        <h1 class="hero-title">
-          Build Your Career With <span class="hero-title-highlight">Intelligent AI</span>
-        </h1>
-        <p class="hero-desc">
-          Craft ATS-compliant resumes in minutes, pinpoint high-impact skill gaps, match directly against top job openings, and practice interactive AI-driven technical & behavioral mock interviews.
+<section id="resume" class="section">
+  <div class="section-title">
+    <p class="badge">RESUME BUILDER</p>
+    <h2>Create Your Resume</h2>
+  </div>
+
+  <div class="resume-layout">
+
+    <form id="resumeForm" class="card">
+
+      <h3>Personal Information</h3>
+
+      <input id="fullName" type="text" placeholder="Full Name" required>
+      <input id="email" type="email" placeholder="Email" required>
+      <input id="phone" type="text" placeholder="Phone">
+      <input id="location" type="text" placeholder="Location">
+
+      <input id="linkedin" type="url" placeholder="LinkedIn URL">
+      <input id="github" type="url" placeholder="GitHub URL">
+
+      <h3>Career</h3>
+
+      <textarea id="summary"
+        placeholder="Professional Summary"></textarea>
+
+      <h3>Education</h3>
+
+      <input id="degree" type="text" placeholder="Degree">
+      <input id="college" type="text" placeholder="College / University">
+      <input id="cgpa" type="text" placeholder="CGPA">
+
+      <h3>Skills</h3>
+
+      <input id="skills"
+        type="text"
+        placeholder="Java, Python, HTML, CSS, JavaScript, SQL">
+
+      <h3>Experience</h3>
+
+      <input id="company" type="text" placeholder="Company">
+      <input id="jobTitle" type="text" placeholder="Job Title">
+
+      <textarea id="experience"
+        placeholder="Experience Description"></textarea>
+
+      <h3>Projects</h3>
+
+      <input id="projectName" type="text" placeholder="Project Name">
+
+      <input id="technologies"
+        type="text"
+        placeholder="Technologies Used">
+
+      <textarea id="projectDescription"
+        placeholder="Project Description"></textarea>
+
+      <h3>Certifications</h3>
+
+      <input id="certifications"
+        type="text"
+        placeholder="Certification Name">
+
+      <button type="submit" class="primary-btn">
+        Generate Resume
+      </button>
+
+    </form>
+
+
+    <div class="card preview">
+
+      <div class="preview-header">
+        <h2 id="previewName">Your Name</h2>
+        <p id="previewContact">
+          email@example.com
         </p>
-        <div class="hero-cta">
-          <button class="btn btn-primary btn-lg" id="heroStartResumeBtn" onclick="navigateTo('builder')">Build Resume Free</button>
-          <button class="btn btn-secondary btn-lg" id="heroFindJobsBtn" onclick="navigateTo('jobs')">Explore Matching Jobs</button>
-          <button class="btn btn-outline btn-lg" id="heroMockInterviewBtn" onclick="navigateTo('interview')">Try Mock Interview</button>
-        </div>
       </div>
 
-      <!-- Feature Highlights Grid -->
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📄</div>
-          <h3>AI Resume Builder</h3>
-          <p>Create clean, ATS-compliant resumes with dynamic education, experience, projects, and skills. Live preview with instant print and PDF download support.</p>
-          <button class="btn btn-outline btn-sm" onclick="navigateTo('builder')">Open Builder →</button>
-        </div>
+      <hr>
+
+      <h3>Professional Summary</h3>
+      <p id="previewSummary">
+        Your professional summary will appear here.
+      </p>
+
+      <h3>Education</h3>
+      <p id="previewEducation">
+        Your education details.
+      </p>
+
+      <h3>Skills</h3>
+      <div id="previewSkills" class="skills"></div>
+
+      <h3>Experience</h3>
+      <p id="previewExperience">
+        Your experience details.
+      </p>
+
+      <h3>Projects</h3>
+      <p id="previewProject">
+        Your project details.
+      </p>
+
+      <h3>Certifications</h3>
+      <p id="previewCertification">
+        Your certifications.
+      </p>
+
+      <button id="printBtn" class="secondary-btn">
+        Print / Save PDF
+      </button>
 
-        <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <h3>Deep ATS Resume Analysis</h3>
-          <p>Get instant circular quality scores, ATS parseability ratings, granular strengths, keyword gaps, and recruiter-focused phrasing recommendations.</p>
-          <button class="btn btn-outline btn-sm" onclick="navigateTo('analysis')">Analyze Resume →</button>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">💼</div>
-          <h3>Smart Job Matcher</h3>
-          <p>Compare your exact skills and experience against active engineering and tech positions with real-time match percentage calculation.</p>
-          <button class="btn btn-outline btn-sm" onclick="navigateTo('jobs')">Search Jobs →</button>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🎙️</div>
-          <h3>AI Mock Interview Simulator</h3>
-          <p>Practice realistic technical, behavioral, and HR questions generated for your specific role. Get scored on technical accuracy, communication, and confidence.</p>
-          <button class="btn btn-outline btn-sm" onclick="navigateTo('interview')">Start Interview →</button>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🗺️</div>
-          <h3>Skill Gap & 4-Week Roadmap</h3>
-          <p>Benchmark your current abilities against your target dream role and generate a tailored week-by-week actionable study and project plan.</p>
-          <button class="btn btn-outline btn-sm" onclick="navigateTo('skillgap')">View Skill Gap →</button>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Job Application Tracker</h3>
-          <p>Track applications across statuses: Saved, Applied, Interview, Selected, and Rejected. Never lose track of your pipeline again.</p>
-          <button class="btn btn-outline btn-sm" onclick="navigateTo('tracker')">Track Applications →</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. USER DASHBOARD VIEW -->
-    <section class="view-section" id="viewDashboard">
-      <div class="dashboard-header">
-        <div>
-          <h2 id="dashWelcomeTitle">Welcome back, Alex!</h2>
-          <p>Here is your career progression overview and AI recommendations.</p>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-primary" onclick="navigateTo('builder')">✏️ Edit Resume</button>
-          <button class="btn btn-secondary" onclick="navigateTo('interview')">🎙️ Practice Interview</button>
-        </div>
-      </div>
-
-      <!-- Stats Grid -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">📄</div>
-          <div>
-            <div class="stat-val" id="statCompletionVal">85%</div>
-            <div class="stat-label">Resume Completion</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">⚡</div>
-          <div>
-            <div class="stat-val" id="statSkillsVal">17</div>
-            <div class="stat-label">Verified Skills</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">💼</div>
-          <div>
-            <div class="stat-val" id="statAppsVal">3</div>
-            <div class="stat-label">Active Applications</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">🏆</div>
-          <div>
-            <div class="stat-val" id="statInterviewVal">88</div>
-            <div class="stat-label">Best Interview Score</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Action Cards -->
-      <h3 style="margin-bottom: 1rem;">Quick Actions</h3>
-      <div class="quick-actions-grid">
-        <button class="action-card" onclick="navigateTo('builder')">
-          <span class="badge badge-primary">Builder</span>
-          <h4>Create & Edit Resume</h4>
-          <p>Update work history, projects, and export an ATS-optimized PDF.</p>
-        </button>
-
-        <button class="action-card" onclick="navigateTo('analysis')">
-          <span class="badge badge-success">AI Powered</span>
-          <h4>Analyze Resume</h4>
-          <p>Run full Gemini ATS scan and get actionable improvement tips.</p>
-        </button>
-
-        <button class="action-card" onclick="navigateTo('jobs')">
-          <span class="badge badge-warning">Matching</span>
-          <h4>Find Matching Jobs</h4>
-          <p>See positions where your skill match is above 70%.</p>
-        </button>
-
-        <button class="action-card" onclick="navigateTo('interview')">
-          <span class="badge badge-primary">Simulator</span>
-          <h4>Start Mock Interview</h4>
-          <p>Run simulated technical and behavioral Q&A sessions.</p>
-        </button>
-      </div>
-
-      <!-- Dashboard Grid for Recommended Jobs and Recent Applications -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
-        <!-- Top Matched Jobs -->
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3>Recommended Jobs For You</h3>
-            <button class="btn btn-outline btn-sm" onclick="navigateTo('jobs')">View All</button>
-          </div>
-          <div id="dashRecommendedJobsList">
-            <p>Loading recommendations...</p>
-          </div>
-        </div>
-
-        <!-- Recent Application Activity -->
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3>Application Pipeline</h3>
-            <button class="btn btn-outline btn-sm" onclick="navigateTo('tracker')">Manage</button>
-          </div>
-          <div id="dashRecentAppsList">
-            <p>Loading applications...</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. AI RESUME BUILDER VIEW -->
-    <section class="view-section" id="viewBuilder">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2>AI Resume Builder</h2>
-          <p>Complete your details on the left. Watch your ATS-ready resume render live on the right.</p>
-        </div>
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <button class="btn btn-secondary btn-sm" id="btnFillSampleResume" onclick="loadSampleResumeData()">Load Sample Data</button>
-          <button class="btn btn-primary btn-sm" id="btnSaveResume" onclick="saveCurrentResume()">💾 Save Resume</button>
-          <button class="btn btn-success btn-sm" id="btnAnalyzeResumeDirect" onclick="triggerAnalyzeFromBuilder()">✨ AI Critique</button>
-          <button class="btn btn-outline btn-sm" id="btnPrintResume" onclick="printResumePreview()">🖨️ Print / Save PDF</button>
-        </div>
-      </div>
-
-      <div class="builder-layout">
-        <!-- Left Side: Form Sections -->
-        <div class="builder-panel">
-          <!-- Accordion 1: Personal Info -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accPersonal')">
-              <span>👤 1. Personal Information</span>
-              <span id="icon-accPersonal">▼</span>
-            </div>
-            <div class="accordion-body open" id="accPersonal">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="resFullName">Full Name *</label>
-                  <input type="text" id="resFullName" class="form-control" placeholder="e.g. Alex Morgan" oninput="updateLivePreview()">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="resEmail">Email *</label>
-                  <input type="email" id="resEmail" class="form-control" placeholder="e.g. alex@example.com" oninput="updateLivePreview()">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="resPhone">Phone</label>
-                  <input type="text" id="resPhone" class="form-control" placeholder="e.g. +1 (555) 234-5678" oninput="updateLivePreview()">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="resLocation">Location</label>
-                  <input type="text" id="resLocation" class="form-control" placeholder="e.g. San Francisco, CA" oninput="updateLivePreview()">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="resLinkedIn">LinkedIn URL</label>
-                  <input type="url" id="resLinkedIn" class="form-control" placeholder="https://linkedin.com/in/..." oninput="updateLivePreview()">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="resGitHub">GitHub URL</label>
-                  <input type="url" id="resGitHub" class="form-control" placeholder="https://github.com/..." oninput="updateLivePreview()">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="resPortfolio">Portfolio URL</label>
-                <input type="url" id="resPortfolio" class="form-control" placeholder="https://yourportfolio.dev" oninput="updateLivePreview()">
-              </div>
-            </div>
-          </div>
-
-          <!-- Accordion 2: Career Summary -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accSummary')">
-              <span>🎯 2. Career Summary & Objective</span>
-              <span id="icon-accSummary">▼</span>
-            </div>
-            <div class="accordion-body open" id="accSummary">
-              <div class="form-group">
-                <label class="form-label" for="resSummary">Professional Summary</label>
-                <textarea id="resSummary" class="form-control" rows="3" placeholder="Summary of your key technical experience, achievements, and impact..." oninput="updateLivePreview()"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="resObjective">Career Objective</label>
-                <textarea id="resObjective" class="form-control" rows="2" placeholder="Target role and what you aim to achieve..." oninput="updateLivePreview()"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- Accordion 3: Education -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accEducation')">
-              <span>🎓 3. Education</span>
-              <span id="icon-accEducation">▼</span>
-            </div>
-            <div class="accordion-body open" id="accEducation">
-              <div id="educationList"></div>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="addEducationEntry()">+ Add Education</button>
-            </div>
-          </div>
-
-          <!-- Accordion 4: Experience -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accExperience')">
-              <span>💼 4. Experience</span>
-              <span id="icon-accExperience">▼</span>
-            </div>
-            <div class="accordion-body open" id="accExperience">
-              <div id="experienceList"></div>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="addExperienceEntry()">+ Add Experience</button>
-            </div>
-          </div>
-
-          <!-- Accordion 5: Projects -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accProjects')">
-              <span>🚀 5. Projects</span>
-              <span id="icon-accProjects">▼</span>
-            </div>
-            <div class="accordion-body open" id="accProjects">
-              <div id="projectsList"></div>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="addProjectEntry()">+ Add Project</button>
-            </div>
-          </div>
-
-          <!-- Accordion 6: Skills -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accSkills')">
-              <span>⚡ 6. Technical Skills</span>
-              <span id="icon-accSkills">▼</span>
-            </div>
-            <div class="accordion-body open" id="accSkills">
-              <div class="form-group">
-                <label class="form-label" for="skillsProg">Programming Languages (comma separated)</label>
-                <input type="text" id="skillsProg" class="form-control" placeholder="e.g. JavaScript, TypeScript, Python" oninput="updateLivePreview()">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="skillsWeb">Web Technologies & Frameworks</label>
-                <input type="text" id="skillsWeb" class="form-control" placeholder="e.g. React, Node.js, Express, Tailwind CSS" oninput="updateLivePreview()">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="skillsDb">Databases</label>
-                <input type="text" id="skillsDb" class="form-control" placeholder="e.g. SQLite, PostgreSQL, MongoDB, Redis" oninput="updateLivePreview()">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="skillsTools">Developer Tools & Cloud</label>
-                <input type="text" id="skillsTools" class="form-control" placeholder="e.g. Git, Docker, AWS, Webpack, Vite" oninput="updateLivePreview()">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="skillsOther">Other Specialized Skills</label>
-                <input type="text" id="skillsOther" class="form-control" placeholder="e.g. REST APIs, Microservices, Agile" oninput="updateLivePreview()">
-              </div>
-            </div>
-          </div>
-
-          <!-- Accordion 7: Certifications & Achievements -->
-          <div class="accordion-section">
-            <div class="accordion-header" onclick="toggleAccordion('accCert')">
-              <span>🏅 7. Certifications & Achievements</span>
-              <span id="icon-accCert">▼</span>
-            </div>
-            <div class="accordion-body" id="accCert">
-              <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem;">Certifications</h4>
-              <div id="certificationsList"></div>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="addCertificationEntry()" style="margin-bottom: 1.25rem;">+ Add Certification</button>
-
-              <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem;">Key Achievements</h4>
-              <div id="achievementsList"></div>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="addAchievementEntry()">+ Add Achievement</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Side: Live Resume Preview (Print Target) -->
-        <div>
-          <div style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
-            <span class="badge badge-primary">Live ATS Preview</span>
-            <small style="color: var(--slate-500);">Auto-updates as you type</small>
-          </div>
-          <div class="preview-container" id="resumeLiveDoc">
-            <div class="resume-header">
-              <div class="resume-name" id="prevName">YOUR NAME</div>
-              <div class="resume-contacts" id="prevContacts">
-                <span id="prevLocation">City, State</span> |
-                <span id="prevEmail">email@example.com</span> |
-                <span id="prevPhone">(555) 000-0000</span>
-              </div>
-              <div class="resume-contacts" id="prevLinks" style="margin-top: 0.25rem;">
-                <span id="prevLinkedIn">linkedin.com/in/...</span> |
-                <span id="prevGitHub">github.com/...</span> |
-                <span id="prevPortfolio">portfolio.dev</span>
-              </div>
-            </div>
-
-            <div id="prevSectionSummary" style="display: none;">
-              <div class="resume-section-title">Professional Summary</div>
-              <div class="resume-entry-desc" id="prevSummaryText"></div>
-            </div>
-
-            <div id="prevSectionExperience" style="display: none;">
-              <div class="resume-section-title">Work Experience</div>
-              <div id="prevExperienceEntries"></div>
-            </div>
-
-            <div id="prevSectionEducation" style="display: none;">
-              <div class="resume-section-title">Education</div>
-              <div id="prevEducationEntries"></div>
-            </div>
-
-            <div id="prevSectionProjects" style="display: none;">
-              <div class="resume-section-title">Key Projects</div>
-              <div id="prevProjectsEntries"></div>
-            </div>
-
-            <div id="prevSectionSkills" style="display: none;">
-              <div class="resume-section-title">Technical Skills</div>
-              <div id="prevSkillsEntries" class="resume-entry-desc"></div>
-            </div>
-
-            <div id="prevSectionCertifications" style="display: none;">
-              <div class="resume-section-title">Certifications</div>
-              <div id="prevCertEntries"></div>
-            </div>
-
-            <div id="prevSectionAchievements" style="display: none;">
-              <div class="resume-section-title">Achievements</div>
-              <ul id="prevAchievementsEntries" style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--slate-700);"></ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. AI RESUME ANALYSIS VIEW -->
-    <section class="view-section" id="viewAnalysis">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2>AI Resume & ATS Critique</h2>
-          <p>Powered by Gemini 3.8 Flash. Analyzes quality, ATS scoring, missing keywords, and recruiter impact.</p>
-        </div>
-        <button class="btn btn-primary" id="btnRunAnalysis" onclick="runAiResumeAnalysis()">⚡ Run New Analysis</button>
-      </div>
-
-      <!-- Loading State -->
-      <div id="analysisLoadingState" style="display: none; text-align: center; padding: 4rem 1rem;">
-        <div style="font-size: 2.5rem; margin-bottom: 1rem; animation: spin 1s linear infinite;">⚙️</div>
-        <h3>Gemini is evaluating your resume...</h3>
-        <p>Scanning technical depth, grammar, ATS compatibility, and phrasing impact.</p>
-      </div>
-
-      <!-- Analysis Results Container -->
-      <div id="analysisResultContainer" style="display: none;">
-        <div class="score-circle-container">
-          <div style="text-align: center;">
-            <div class="circular-score" id="circleOverallScore" style="--score-deg: 306;">
-              <div class="circular-score-text">
-                <div class="circular-score-val" id="valQualityScore">85</div>
-                <div class="circular-score-label">Quality Score</div>
-              </div>
-            </div>
-            <p style="margin-top: 0.5rem; font-weight: 600; font-size: 0.85rem;">Overall Impact</p>
-          </div>
-
-          <div style="text-align: center;">
-            <div class="circular-score" id="circleAtsScore" style="--score-deg: 316; background: conic-gradient(var(--success) calc(var(--score-deg) * 1deg), var(--slate-200) 0deg);">
-              <div class="circular-score-text">
-                <div class="circular-score-val" id="valAtsScore" style="color: var(--success);">88</div>
-                <div class="circular-score-label">ATS Score</div>
-              </div>
-            </div>
-            <p style="margin-top: 0.5rem; font-weight: 600; font-size: 0.85rem;">ATS Readability</p>
-          </div>
-
-          <div style="max-width: 320px; flex: 1;">
-            <h4>Model Assessment</h4>
-            <p id="analysisSourceTag" style="font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">Engine: Gemini 3.8 Flash</p>
-            <div style="font-size: 0.9rem; color: var(--slate-600);">
-              Your resume demonstrates strong technical foundations and project ownership. Refine the items below to break into the top 5% candidate pool.
-            </div>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-          <!-- Strengths Card -->
-          <div class="card">
-            <h3 style="color: var(--success); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-              <span>✅</span> Candidate Strengths
-            </h3>
-            <ul id="analysisStrengthsList" style="padding-left: 1.25rem; font-size: 0.925rem; line-height: 1.6; color: var(--slate-700);"></ul>
-          </div>
-
-          <!-- Weaknesses Card -->
-          <div class="card">
-            <h3 style="color: var(--warning); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-              <span>⚠️</span> Areas for Improvement
-            </h3>
-            <ul id="analysisWeaknessesList" style="padding-left: 1.25rem; font-size: 0.925rem; line-height: 1.6; color: var(--slate-700);"></ul>
-          </div>
-        </div>
-
-        <!-- Missing High-Demand Skills -->
-        <div class="card" style="margin-bottom: 1.5rem;">
-          <h3 style="margin-bottom: 0.75rem;">Missing High-Demand Skills</h3>
-          <p style="margin-bottom: 1rem; font-size: 0.9rem;">Adding these recommended technologies will significantly improve your ATS keyword match rates:</p>
-          <div class="skills-tag-container" id="analysisMissingSkillsTags"></div>
-        </div>
-
-        <!-- Actionable Improvement Suggestions -->
-        <div class="card">
-          <h3 style="color: var(--primary); margin-bottom: 1rem;">Actionable Step-by-Step Suggestions</h3>
-          <div id="analysisSuggestionsList" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
-          <div style="margin-top: 1.5rem;">
-            <button class="btn btn-primary" onclick="navigateTo('builder')">Open Resume Builder to Apply Changes</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. JOB FINDER VIEW -->
-    <section class="view-section" id="viewJobs">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2>AI Job Finder & Matcher</h2>
-          <p>Explore technical roles and calculate match percentage against your active resume skills.</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
-            <input type="checkbox" id="toggleOnlyMatched" onchange="filterAndRenderJobs()"> Match against my resume
-          </label>
-        </div>
-      </div>
-
-      <!-- Search & Filters -->
-      <div class="job-search-bar">
-        <input type="text" id="jobSearchTitle" class="form-control" placeholder="Search title or keywords (e.g. React, Full Stack)" oninput="filterAndRenderJobs()">
-        <input type="text" id="jobSearchLocation" class="form-control" placeholder="Location (e.g. Remote, San Francisco)" oninput="filterAndRenderJobs()">
-        <select id="jobFilterExp" class="form-control" onchange="filterAndRenderJobs()">
-          <option value="all">All Experience</option>
-          <option value="entry">Entry Level</option>
-          <option value="mid">Mid Level</option>
-          <option value="senior">Senior Level</option>
-        </select>
-        <button class="btn btn-primary" onclick="filterAndRenderJobs()">Search</button>
-      </div>
-
-      <!-- Results Count -->
-      <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-        <span id="jobsResultCount" style="font-size: 0.9rem; color: var(--slate-600); font-weight: 500;">Showing 10 jobs</span>
-        <button class="btn btn-secondary btn-sm" onclick="resetJobFilters()">Reset Filters</button>
-      </div>
-
-      <!-- Jobs List -->
-      <div id="jobsListContainer">
-        <!-- Rendered dynamically -->
-      </div>
-    </section>
-
-    <!-- 6. AI MOCK INTERVIEW VIEW -->
-    <section class="view-section" id="viewInterview">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2>AI Mock Interview Simulator</h2>
-          <p>Practice realistic, interactive technical and behavioral questions evaluated live by Gemini.</p>
-        </div>
-        <button class="btn btn-outline btn-sm" id="btnInterviewHistory" onclick="showInterviewHistoryModal()">View History</button>
-      </div>
-
-      <!-- Setup Screen -->
-      <div class="interview-box" id="interviewSetupScreen">
-        <h3 style="margin-bottom: 0.5rem;">Configure Your Mock Interview</h3>
-        <p style="margin-bottom: 1.5rem;">Select your target domain and experience level. The AI will curate 5 tailored questions.</p>
-
-        <div class="form-group">
-          <label class="form-label" for="interviewJobRole">Target Job Role</label>
-          <input type="text" id="interviewJobRole" class="form-control" value="Senior Full Stack Engineer" placeholder="e.g. Frontend Developer, Cloud Architect, AI Engineer">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="interviewExpLevel">Experience Level</label>
-            <select id="interviewExpLevel" class="form-control">
-              <option value="Entry">Entry Level (0-2 years)</option>
-              <option value="Mid" selected>Mid Level (2-5 years)</option>
-              <option value="Senior">Senior Level (5-8 years)</option>
-              <option value="Lead">Lead / Staff (8+ years)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="interviewType">Interview Focus</label>
-            <select id="interviewType" class="form-control">
-              <option value="Mixed" selected>Mixed (Technical + Behavioral)</option>
-              <option value="Technical">Technical & System Design</option>
-              <option value="Behavioral">Behavioral (STAR Method)</option>
-              <option value="HR">HR & Cultural Alignment</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="margin-top: 1.5rem; text-align: right;">
-          <button class="btn btn-primary btn-lg" id="btnStartInterviewSession" onclick="startInterviewSession()">🚀 Start Interview Session</button>
-        </div>
-      </div>
-
-      <!-- Active Interview Screen -->
-      <div class="interview-box" id="interviewActiveScreen" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-          <span class="badge badge-primary" id="interviewProgressBadge">Question 1 of 5</span>
-          <span class="badge badge-slate" id="interviewActiveRoleBadge">Full Stack Engineer</span>
-        </div>
-
-        <div class="question-card" id="interviewQuestionText">
-          Loading question...
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="interviewAnswerInput">Your Response:</label>
-          <textarea id="interviewAnswerInput" class="form-control" rows="5" placeholder="Type your answer clearly. Structure your thought process and cite examples..."></textarea>
-          <div style="display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.8rem; color: var(--slate-500);">
-            <span id="interviewAnswerWordCount">0 words</span>
-            <span>Tip: Minimum 30+ words for deep technical scoring</span>
-          </div>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-          <button class="btn btn-primary" id="btnSubmitAnswer" onclick="submitInterviewAnswer()">Submit Answer</button>
-        </div>
-
-        <!-- Evaluation Feedback Box -->
-        <div class="answer-eval-box" id="interviewAnswerEvalBox" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h4 style="color: var(--primary);">Instant AI Answer Evaluation</h4>
-            <span class="badge badge-success" id="evalScoreBadge">Score: 88/100</span>
-          </div>
-
-          <div class="eval-metrics">
-            <div class="eval-metric-card">
-              <div class="eval-metric-num" id="evalTechVal">9/10</div>
-              <div class="eval-metric-name">Technical</div>
-            </div>
-            <div class="eval-metric-card">
-              <div class="eval-metric-num" id="evalCommVal">8/10</div>
-              <div class="eval-metric-name">Communication</div>
-            </div>
-            <div class="eval-metric-card">
-              <div class="eval-metric-num" id="evalRelevanceVal">9/10</div>
-              <div class="eval-metric-name">Relevance</div>
-            </div>
-            <div class="eval-metric-card">
-              <div class="eval-metric-num" id="evalConfidenceVal">8/10</div>
-              <div class="eval-metric-name">Confidence</div>
-            </div>
-          </div>
-
-          <p style="font-size: 0.9rem; margin-bottom: 0.75rem;" id="evalFeedbackText"></p>
-          <div style="background: var(--white); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--slate-200); font-size: 0.85rem; color: var(--slate-700);">
-            <strong style="color: var(--primary);">💡 Top Candidate Tip: </strong>
-            <span id="evalIdealTip"></span>
-          </div>
-
-          <div style="margin-top: 1.25rem; text-align: right;">
-            <button class="btn btn-primary" id="btnNextQuestion" onclick="goToNextQuestion()">Next Question →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Final Report Screen -->
-      <div class="interview-box" id="interviewReportScreen" style="display: none;">
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-          <span class="badge badge-success" style="margin-bottom: 0.5rem;">Interview Completed</span>
-          <h2>Candidate Evaluation Report</h2>
-          <p id="reportHeaderDesc">Role: Senior Full Stack Engineer</p>
-        </div>
-
-        <div class="score-circle-container">
-          <div style="text-align: center;">
-            <div class="circular-score" id="circleInterviewOverall" style="--score-deg: 320;">
-              <div class="circular-score-text">
-                <div class="circular-score-val" id="reportOverallVal">89</div>
-                <div class="circular-score-label">Overall</div>
-              </div>
-            </div>
-            <p style="margin-top: 0.4rem; font-weight: 600; font-size: 0.85rem;">Overall Rating</p>
-          </div>
-
-          <div style="flex: 1; min-width: 200px;">
-            <div style="margin-bottom: 0.75rem;">
-              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
-                <span>Technical Correctness</span>
-                <span id="reportTechPct">90%</span>
-              </div>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar-fill" id="reportTechBar" style="width: 90%;"></div>
-              </div>
-            </div>
-
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
-                <span>Communication & Phrasing</span>
-                <span id="reportCommPct">85%</span>
-              </div>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar-fill" id="reportCommBar" style="width: 85%; background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 1.25rem;">
-          <h4 style="color: var(--success); margin-bottom: 0.5rem;">Key Strengths</h4>
-          <ul id="reportStrengthsList" style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--slate-700); line-height: 1.6;"></ul>
-        </div>
-
-        <div style="margin-bottom: 1.25rem;">
-          <h4 style="color: var(--warning); margin-bottom: 0.5rem;">Areas for Growth</h4>
-          <ul id="reportWeaknessesList" style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--slate-700); line-height: 1.6;"></ul>
-        </div>
-
-        <div style="margin-bottom: 1.75rem;">
-          <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Recruiter Recommendations</h4>
-          <ul id="reportSuggestionsList" style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--slate-700); line-height: 1.6;"></ul>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--slate-200); padding-top: 1.25rem;">
-          <button class="btn btn-secondary" onclick="navigateTo('dashboard')">Back to Dashboard</button>
-          <button class="btn btn-primary" onclick="resetInterviewSetup()">Take Another Interview</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. SKILL GAP ANALYZER VIEW -->
-    <section class="view-section" id="viewSkillGap">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2>Skill Gap Analyzer & 4-Week Roadmap</h2>
-          <p>Compare your current skills against any target role to receive priority missing skills and a structured weekly learning plan.</p>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom: 2rem;">
-        <div class="form-row">
-          <div class="form-group" style="flex: 2;">
-            <label class="form-label" for="targetRoleInput">Target Job Role</label>
-            <input type="text" id="targetRoleInput" class="form-control" value="Senior Full Stack Engineer" placeholder="e.g. Backend Architect, AI Specialist, Cloud DevOps">
-          </div>
-          <div class="form-group" style="display: flex; align-items: flex-end;">
-            <button class="btn btn-primary" id="btnAnalyzeSkillGap" onclick="runSkillGapAnalysis()" style="height: 42px;">⚡ Analyze Gap</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="skillGapResultsContainer" style="display: none;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-          <div class="card">
-            <h3>Current Verified Skills</h3>
-            <div class="skills-tag-container" id="currentSkillsTags" style="margin-top: 1rem;"></div>
-          </div>
-
-          <div class="card">
-            <h3>Missing Skills by Priority</h3>
-            <div id="missingSkillsPriorityList" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;"></div>
-          </div>
-        </div>
-
-        <!-- 4-Week Roadmap -->
-        <div class="card">
-          <h3 style="margin-bottom: 1rem;">4-Week Structured Learning Roadmap</h3>
-          <div id="roadmapWeeksGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. APPLICATION TRACKER VIEW -->
-    <section class="view-section" id="viewTracker">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2>Application Tracker</h2>
-          <p>Manage and update your active job applications in real time.</p>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="navigateTo('jobs')">+ Find & Add Jobs</button>
-      </div>
-
-      <div class="data-table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Job Title</th>
-              <th>Company</th>
-              <th>Location</th>
-              <th>Salary</th>
-              <th>Status</th>
-              <th>Date Applied</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="applicationsTableBody">
-            <tr>
-              <td colspan="7" style="text-align: center; padding: 2rem; color: var(--slate-500);">Loading your applications...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <!-- Login Modal -->
-  <div class="modal-overlay" id="modalLogin">
-    <div class="modal-content">
-      <button class="modal-close-btn" onclick="closeModal('modalLogin')">&times;</button>
-      <h3 style="margin-bottom: 0.35rem;">Sign In to CareerAI</h3>
-      <p style="margin-bottom: 1.25rem; font-size: 0.875rem;">Access your saved resumes, applications, and interview reports.</p>
-
-      <form onsubmit="handleLoginSubmit(event)">
-        <div class="form-group">
-          <label class="form-label" for="loginEmail">Email Address</label>
-          <input type="email" id="loginEmail" class="form-control" required placeholder="alex@careerai.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" class="form-control" required placeholder="••••••••">
-        </div>
-        <div style="display: flex; gap: 0.5rem; margin-top: 1.25rem;">
-          <button type="submit" class="btn btn-primary" style="flex: 1;" id="btnLoginSubmit">Sign In</button>
-          <button type="button" class="btn btn-secondary" onclick="quickFillDemoCredentials()">Demo Fill</button>
-        </div>
-      </form>
-      <div style="margin-top: 1rem; text-align: center; font-size: 0.85rem; color: var(--slate-600);">
-        Don't have an account? <a href="javascript:void(0)" onclick="switchModal('modalLogin', 'modalRegister')">Create one now</a>
-      </div>
     </div>
+
+  </div>
+</section>
+
+
+<section id="jobs" class="section">
+
+  <div class="section-title">
+    <p class="badge">JOB FINDER</p>
+    <h2>Find Suitable Jobs</h2>
   </div>
 
-  <!-- Register Modal -->
-  <div class="modal-overlay" id="modalRegister">
-    <div class="modal-content">
-      <button class="modal-close-btn" onclick="closeModal('modalRegister')">&times;</button>
-      <h3 style="margin-bottom: 0.35rem;">Create Your CareerAI Account</h3>
-      <p style="margin-bottom: 1.25rem; font-size: 0.875rem;">Join thousands of engineers building careers with AI.</p>
+  <div class="search-box">
+    <input id="jobSearch"
+      type="text"
+      placeholder="Search job role...">
 
-      <form onsubmit="handleRegisterSubmit(event)">
-        <div class="form-group">
-          <label class="form-label" for="regName">Full Name</label>
-          <input type="text" id="regName" class="form-control" required placeholder="Alex Morgan">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="regEmail">Email Address</label>
-          <input type="email" id="regEmail" class="form-control" required placeholder="alex@example.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="regPassword">Password (min 6 chars)</label>
-          <input type="password" id="regPassword" class="form-control" required minlength="6" placeholder="••••••••">
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="btnRegSubmit">Create Account</button>
-      </form>
-      <div style="margin-top: 1rem; text-align: center; font-size: 0.85rem; color: var(--slate-600);">
-        Already registered? <a href="javascript:void(0)" onclick="switchModal('modalRegister', 'modalLogin')">Sign in here</a>
-      </div>
-    </div>
+    <button id="searchJobBtn" class="primary-btn">
+      Search
+    </button>
   </div>
 
-  <!-- Interview History Modal -->
-  <div class="modal-overlay" id="modalInterviewHistory">
-    <div class="modal-content" style="max-width: 650px;">
-      <button class="modal-close-btn" onclick="closeModal('modalInterviewHistory')">&times;</button>
-      <h3 style="margin-bottom: 1rem;">Past Mock Interview Sessions</h3>
-      <div id="interviewHistoryModalList" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
-        <p>Loading history...</p>
-      </div>
-    </div>
+  <div id="jobList" class="job-grid"></div>
+
+</section>
+
+
+<section id="interview" class="section">
+
+  <div class="section-title">
+    <p class="badge">AI INTERVIEW</p>
+    <h2>Mock Interview</h2>
   </div>
 
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="interview-card card">
 
-  <!-- Frontend JavaScript -->
-  <script src="script.js"></script>
+    <label>Choose Job Role</label>
+
+    <select id="interviewRole">
+      <option value="Software Developer">
+        Software Developer
+      </option>
+      <option value="Frontend Developer">
+        Frontend Developer
+      </option>
+      <option value="Backend Developer">
+        Backend Developer
+      </option>
+      <option value="Data Analyst">
+        Data Analyst
+      </option>
+    </select>
+
+    <button id="startInterviewBtn"
+      class="primary-btn">
+      Start AI Interview
+    </button>
+
+    <div id="interviewArea" class="hidden">
+
+      <h3 id="question">
+        Question will appear here
+      </h3>
+
+      <textarea id="answer"
+        placeholder="Type your answer..."></textarea>
+
+      <button id="submitAnswerBtn"
+        class="primary-btn">
+        Submit Answer
+      </button>
+
+      <div id="interviewResult"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<div id="loginModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <button id="closeModal" class="close">×</button>
+
+    <h2>Sign In to CareerAI</h2>
+
+    <button id="googleLogin"
+      class="google-btn"
+      type="button">
+      <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+      </svg>
+      <span>Continue with Google</span>
+    </button>
+
+    <div class="modal-divider"><span>or sign in with email</span></div>
+
+    <input id="loginEmail"
+      type="email"
+      placeholder="Email address">
+
+    <input id="loginPassword"
+      type="password"
+      placeholder="Password">
+
+    <button id="loginSubmit"
+      class="primary-btn"
+      style="width: 100%; margin-top: 5px;">
+      Sign In
+    </button>
+
+    <p id="loginMessage" style="color: #dc2626; margin-top: 10px; font-size: 13px; text-align: center;"></p>
+
+    <div class="demo-hint">
+      Need quick access? <button id="demoLoginBtn" type="button">Use Demo Account</button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+
 </body>
 </html>

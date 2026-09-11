@@ -58,23 +58,47 @@ router.get('/', authenticateToken, (req, res) => {
 router.post('/', authenticateToken, (req, res) => {
   try {
     const userId = req.user.id;
-    const {
-      full_name,
-      email,
-      phone,
-      location,
-      linkedin,
-      github,
-      portfolio,
-      summary,
-      objective,
-      education = [],
-      experience = [],
-      projects = [],
-      certifications = [],
-      skills = [],
-      achievements = []
-    } = req.body;
+    const body = req.body || {};
+    const full_name = body.full_name || body.fullName || '';
+    const email = body.email || '';
+    const phone = body.phone || '';
+    const location = body.location || '';
+    const linkedin = body.linkedin || '';
+    const github = body.github || '';
+    const portfolio = body.portfolio || '';
+    const summary = body.summary || '';
+    const objective = body.objective || '';
+
+    // Normalize education (array or single object)
+    let education = body.education || [];
+    if (!Array.isArray(education) && typeof education === 'object') {
+      education = [education];
+    }
+
+    // Normalize experience (array or single object)
+    let experience = body.experience || [];
+    if (!Array.isArray(experience) && typeof experience === 'object') {
+      experience = [experience];
+    }
+
+    // Normalize projects (array or single object)
+    let projects = body.projects || [];
+    if (!projects.length && body.project) {
+      projects = Array.isArray(body.project) ? body.project : [body.project];
+    }
+
+    // Normalize certifications (array or string)
+    let certifications = body.certifications || [];
+    if (!certifications.length && body.certification) {
+      if (typeof body.certification === 'string' && body.certification.trim()) {
+        certifications = [{ certificate_name: body.certification.trim() }];
+      } else if (Array.isArray(body.certification)) {
+        certifications = body.certification;
+      }
+    }
+
+    const skills = body.skills || [];
+    const achievements = body.achievements || [];
 
     let resume = db.get('SELECT id FROM resumes WHERE user_id = ?', [userId]);
 
@@ -138,14 +162,15 @@ router.post('/', authenticateToken, (req, res) => {
     // Replace experience entries
     db.run('DELETE FROM experience WHERE resume_id = ?', [resumeId]);
     for (const exp of experience) {
-      if (exp.company || exp.job_title) {
+      const jobTitle = exp.job_title || exp.jobTitle || '';
+      if (exp.company || jobTitle) {
         db.run(`
           INSERT INTO experience (resume_id, company, job_title, start_date, end_date, description)
           VALUES (?, ?, ?, ?, ?, ?)
         `, [
           resumeId,
           exp.company || '',
-          exp.job_title || '',
+          jobTitle,
           exp.start_date || '',
           exp.end_date || '',
           exp.description || ''
@@ -156,13 +181,14 @@ router.post('/', authenticateToken, (req, res) => {
     // Replace projects entries
     db.run('DELETE FROM projects WHERE resume_id = ?', [resumeId]);
     for (const proj of projects) {
-      if (proj.project_name) {
+      const projName = proj.project_name || proj.name || '';
+      if (projName) {
         db.run(`
           INSERT INTO projects (resume_id, project_name, technologies, description, project_url)
           VALUES (?, ?, ?, ?, ?)
         `, [
           resumeId,
-          proj.project_name || '',
+          projName,
           proj.technologies || '',
           proj.description || '',
           proj.project_url || ''

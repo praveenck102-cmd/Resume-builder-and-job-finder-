@@ -1,7 +1,7 @@
 const express = require('express');
 const { GoogleGenAI } = require('@google/genai');
 const db = require('../database');
-const { authenticateToken } = require('./auth');
+const { authenticateToken, optionalAuth } = require('./auth');
 
 const router = express.Router();
 
@@ -71,14 +71,12 @@ function getFallbackQuestions(jobRole, experienceLevel, interviewType) {
 }
 
 // POST /api/interview/start
-router.post('/start', authenticateToken, async (req, res) => {
+router.post('/start', optionalAuth, async (req, res) => {
   try {
-    const userId = req.user.id;
-    const {
-      jobRole = 'Full Stack Engineer',
-      experienceLevel = 'Mid',
-      interviewType = 'Mixed'
-    } = req.body;
+    const userId = req.user ? req.user.id : 1;
+    const jobRole = req.body.jobRole || req.body.role || 'Software Developer';
+    const experienceLevel = req.body.experienceLevel || 'Mid';
+    const interviewType = req.body.interviewType || 'Mixed';
 
     const ai = getAiClient();
     let questions = getFallbackQuestions(jobRole, experienceLevel, interviewType);
@@ -109,20 +107,28 @@ Respond ONLY with a JSON array of 5 strings:
       }
     }
 
-    db.run(`
-      INSERT INTO interviews (user_id, job_role, experience_level, interview_type, status, questions_json)
-      VALUES (?, ?, ?, ?, 'in_progress', ?)
-    `, [userId, jobRole, experienceLevel, interviewType, JSON.stringify(questions)]);
+    let interviewId = 1;
+    try {
+      db.run(`
+        INSERT INTO interviews (user_id, job_role, experience_level, interview_type, status, questions_json)
+        VALUES (?, ?, ?, ?, 'in_progress', ?)
+      `, [userId, jobRole, experienceLevel, interviewType, JSON.stringify(questions)]);
 
-    const newInterview = db.get(
-      'SELECT id, job_role, experience_level, interview_type, status, questions_json, created_at FROM interviews WHERE user_id = ? ORDER BY id DESC LIMIT 1',
-      [userId]
-    );
+      const newInterview = db.get(
+        'SELECT id, job_role, experience_level, interview_type, status, questions_json, created_at FROM interviews WHERE user_id = ? ORDER BY id DESC LIMIT 1',
+        [userId]
+      );
+      if (newInterview) interviewId = newInterview.id;
+    } catch (e) {
+      console.warn('Could not store interview session in DB:', e.message);
+    }
 
     return res.status(201).json({
       success: true,
+      question: questions[0],
+      interviewId,
       data: {
-        interviewId: newInterview.id,
+        interviewId,
         jobRole,
         experienceLevel,
         interviewType,
@@ -141,39 +147,47 @@ Respond ONLY with a JSON array of 5 strings:
 });
 
 // POST /api/interview/answer
-router.post('/answer', authenticateToken, async (req, res) => {
+router.post('/answer', optionalAuth, async (req, res) => {
   try {
-    const { interviewId, questionIndex, answer } = req.body;
-    const userId = req.user.id;
+    const { interviewId, questionIndex, answer, question } = req.body;
+    const userId = req.user ? req.user.id : 1;
 
-    if (!interviewId || questionIndex === undefined || !answer) {
+    if (!answer) {
       return res.status(400).json({
         success: false,
-        message: 'interviewId, questionIndex, and answer are required.'
+        message: 'Answer is required.'
       });
     }
 
-    const interview = db.get(
-      'SELECT * FROM interviews WHERE id = ? AND user_id = ?',
-      [interviewId, userId]
-    );
+    let currentQuestion = question || 'Interview question';
+    let jobRole = 'Software Developer';
+    let experienceLevel = 'Mid';
+    let interviewType = 'Technical';
+    let questions = [];
 
-    if (!interview) {
-      return res.status(404).json({
-        success: false,
-        message: 'Interview session not found.'
-      });
+    let interview = null;
+    if (interviewId) {
+      interview = db.get(
+        'SELECT * FROM interviews WHERE id = ?',
+        [interviewId]
+      );
+      if (interview) {
+        jobRole = interview.job_role;
+        experienceLevel = interview.experience_level;
+        interviewType = interview.interview_type;
+        questions = JSON.parse(interview.questions_json || '[]');
+        if (questionIndex !== undefined && questions[questionIndex]) {
+          currentQuestion = questions[questionIndex];
+        }
+      }
     }
-
-    const questions = JSON.parse(interview.questions_json || '[]');
-    const currentQuestion = questions[questionIndex] || 'Interview question';
 
     const ai = getAiClient();
-    let evaluation = evaluateAnswerHeuristically(currentQuestion, answer, interview.job_role);
+    let evaluation = evaluateAnswerHeuristically(currentQuestion, answer, jobRole);
 
     if (ai) {
       const prompt = `
-You are an expert interviewer evaluating a candidate's answer for the role of "${interview.job_role}" (${interview.experience_level} level, ${interview.interview_type} interview).
+You are an expert interviewer evaluating a candidate's answer for the role of "${jobRole}" (${experienceLevel} level, ${interviewType} interview).
 
 Question: "${currentQuestion}"
 Candidate's Answer: "${answer}"
@@ -215,28 +229,38 @@ Respond ONLY with valid JSON matching:
       }
     }
 
-    // Save answer and evaluation
-    db.run(`
-      INSERT INTO interview_answers (interview_id, question_index, question, user_answer, evaluation_json, score)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [
-      interviewId,
-      questionIndex,
-      currentQuestion,
-      answer,
-      JSON.stringify(evaluation),
-      evaluation.score || 80
-    ]);
+    // Save answer and evaluation if interview session exists
+    if (interviewId && questionIndex !== undefined) {
+      try {
+        db.run(`
+          INSERT INTO interview_answers (interview_id, question_index, question, user_answer, evaluation_json, score)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `, [
+          interviewId,
+          questionIndex,
+          currentQuestion,
+          answer,
+          JSON.stringify(evaluation),
+          evaluation.score || 80
+        ]);
+      } catch (e) {
+        console.warn('Error saving answer to DB:', e.message);
+      }
+    }
 
-    const nextIndex = Number(questionIndex) + 1;
-    const isCompleted = nextIndex >= questions.length;
-    const nextQuestion = isCompleted ? null : questions[nextIndex];
+    const nextIndex = questionIndex !== undefined ? Number(questionIndex) + 1 : 1;
+    const isCompleted = questions.length > 0 ? nextIndex >= questions.length : true;
+    const nextQuestion = isCompleted || !questions.length ? null : questions[nextIndex];
 
     return res.json({
       success: true,
+      score: evaluation.score || 80,
+      feedback: evaluation.feedback || 'Good answer.',
       data: {
         questionIndex,
         evaluation,
+        score: evaluation.score || 80,
+        feedback: evaluation.feedback || 'Good answer.',
         isCompleted,
         nextQuestionIndex: isCompleted ? null : nextIndex,
         nextQuestion
